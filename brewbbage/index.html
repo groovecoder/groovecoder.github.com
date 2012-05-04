@@ -28,7 +28,7 @@
         <mi id="strike_water_temp">Tw</mi>
         <mo>=</mo>
         <mo>(</mo>
-        <mn id="const">.2</mn>
+        <mn id="thermo_const">.2</mn>
         <mo>/</mo>
         <mi id="ratio">1.25</mi>
         <mo>)</mo>
@@ -69,39 +69,44 @@
     var thermo_const_us = .2;
     var thermo_const_metric = .41;
     var thermo_const = thermo_const_us;
-    $('.var input').keyup(function(){
-        if ($('select option:selected').val() == "us"){
-          thermo_const = thermo_const_us;
-        } else {
-          thermo_const = thermo_const_metric;
-        }
-        var ratio = parseFloat($('input[name="ratio"]').val());
-        var grain_amount = $('input[name="grain_amount"]').val();
-        var target_temp = $('input[name="target_temp"]').val();
-        var init_temp = $('input[name="init_temp"]').val();
-        if (typeof(ratio) == "number") {
-          $('#ratio').text(ratio);
-        } else {
-          $('#ratio').text('r');
-        }
-        if (target_temp) {
-          $('.target_temp').text(target_temp);
-        } else {
-          $('.target_temp').text('T2');
-        }
-        if (init_temp) {
-          $('.init_temp').text(init_temp);
-        } else {
-          $('.init_temp').text('T1');
-        }
-        var strike_temp = parseFloat((thermo_const/ratio)*(target_temp - init_temp) + parseFloat(target_temp));
-        if (typeof(strike_temp) == "number") {
-          strike_temp = strike_temp.toFixed(1);
-          $('#strike_water_temp').text(strike_temp);
-        } else {
-          $('#strike_water_temp').text('Tw');
-        }
-    });
+
+    function updateFormula() {
+      if ($('select option:selected').val() == "us"){
+        thermo_const = thermo_const_us;
+      } else {
+        thermo_const = thermo_const_metric;
+      }
+      var ratio = parseFloat($('input[name="ratio"]').val());
+      var grain_amount = $('input[name="grain_amount"]').val();
+      var target_temp = $('input[name="target_temp"]').val();
+      var init_temp = $('input[name="init_temp"]').val();
+      $('#thermo_const').text(thermo_const);
+      if (typeof(ratio) == "number") {
+        $('#ratio').text(ratio);
+      } else {
+        $('#ratio').text('r');
+      }
+      if (target_temp) {
+        $('.target_temp').text(target_temp);
+      } else {
+        $('.target_temp').text('T2');
+      }
+      if (init_temp) {
+        $('.init_temp').text(init_temp);
+      } else {
+        $('.init_temp').text('T1');
+      }
+      var strike_temp = parseFloat((thermo_const/ratio)*(target_temp - init_temp) + parseFloat(target_temp));
+      if (typeof(strike_temp) == "number") {
+        strike_temp = strike_temp.toFixed(1);
+        $('#strike_water_temp').text(strike_temp);
+      } else {
+        $('#strike_water_temp').text('Tw');
+      }
+    }
+
+    $('.var input').keyup(updateFormula);
+    $('.var select').change(updateFormula);
     var varDesc = {
       "units": "http://www.howtobrew.com/section3/chapter16-3.html",
       "target": "http://www.howtobrew.com/section3/chapter16-3.html",
