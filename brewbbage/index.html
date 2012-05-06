@@ -19,27 +19,38 @@
 <body>
   <div data-role="page">
     <div data-role="header">
-      <h1 id="mash_water">Mash Water</h1>
+      <h1 id="home_header">Brewbbage</h1>
+    </div>
+    <div data-role="content">
+      <ul data-role="listview" data-inset="true">
+        <li><a href="#strike_water">Strike Water</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div data-role="page" id="strike_water" data-add-back-btn="true">
+    <div data-role="header">
+      <h1 id="strike_water_header">Strike Water</h1>
     </div>
     <div data-role="content">
       <math display="block" id="equation">
       <mrow>
       <mstyle mathsize="120%">
-        <mi id="strike_water_temp">Tw</mi>
+        <mi data-var="strike_water_temp">Tw</mi>
         <mo>=</mo>
         <mo>(</mo>
-        <mn id="thermo_const">.2</mn>
+        <mn data-var="thermo_const">.2</mn>
         <mo>/</mo>
-        <mi id="ratio">1.25</mi>
+        <mi data-var="ratio">r</mi>
         <mo>)</mo>
         <mo>&#xD7;</mo>
         <mo>(</mo>
-        <mi class="target_temp">T2</mi>
+        <mi data-var="target_temp">T2</mi>
         <mo>-</mo>
-        <mi id="init_temp">T1</mi>
+        <mi data-var="init_temp">T1</mi>
         <mo>)</mo>
         <mo>+</mo>
-        <mi class="target_temp">T2</mi>
+        <mi data-var="target_temp">T2</mi>
       </mstyle>
       </mrow>
       </math>
@@ -71,15 +82,15 @@
     var thermo_const = thermo_const_us;
 
     function updateFormula() {
+      var ratio = parseFloat($('input[name="ratio"]').val());
+      var grain_amount = $('input[name="grain_amount"]').val();
+      var target_temp = $('input[name="target_temp"]').val();
+      var init_temp = $('input[name="init_temp"]').val();
       if ($('select option:selected').val() == "us"){
         thermo_const = thermo_const_us;
       } else {
         thermo_const = thermo_const_metric;
       }
-      var ratio = parseFloat($('input[name="ratio"]').val());
-      var grain_amount = $('input[name="grain_amount"]').val();
-      var target_temp = $('input[name="target_temp"]').val();
-      var init_temp = $('input[name="init_temp"]').val();
       $('#thermo_const').text(thermo_const);
       if (typeof(ratio) == "number") {
         $('#ratio').text(ratio);
@@ -99,34 +110,36 @@
       var strike_temp = parseFloat((thermo_const/ratio)*(target_temp - init_temp) + parseFloat(target_temp));
       if (typeof(strike_temp) == "number") {
         strike_temp = strike_temp.toFixed(1);
-        $('#strike_water_temp').text(strike_temp);
+        $('*[data-var=strike_water_temp]').text(strike_temp);
       } else {
-        $('#strike_water_temp').text('Tw');
+        $('*[data-var=strike_water_temp]').text('Tw');
       }
     }
 
     $('.var input').keyup(updateFormula);
     $('.var select').change(updateFormula);
     var varDesc = {
-      "units": "http://www.howtobrew.com/section3/chapter16-3.html",
-      "target": "http://www.howtobrew.com/section3/chapter16-3.html",
-      "init": "http://www.howtobrew.com/section3/chapter16-3.html",
-      "ratio": "http://www.howtobrew.com/section3/chapter16-3.html"
+      "units": "Units of Measurement",
+      "target": "Lower temperatures - around 148-152 F - will take longer but will produce a more complete conversion of complex starches to sugars resulting in more fermentation and a clean, lighter tasting beer. A high temperature of 155-158 F (68.5-70 C) will result in less starch conversion leaving a beer with more unfermentable dextrines. This will create a beer with a full body and flavor. Middle mash temperatures (153-156 F / 67.69 C) will result in medium bodied beers.",
+      "init": "The starting temperature of the grains.",
+      "ratio": "Ratio of water (quarts) to grain (lbs). Ranges from 1.00 to 2.00+; Usually 1.25. Lower ratio produces a thicker mash, which is better for protein breakdown and results in a fast starch conversion, but the resultant sugars are less fermentable and will result in a sweeter maltier beer."
     };
     function initHighlightVar(div, mathEl, descKey) {
-      $(div).hover(function(){
+      $(div).hover(
+        function(){
+          $('.highlight').removeClass('highlight');
           $(mathEl).addClass('highlight');
           $('#variable_desc').val(varDesc[descKey]);
         },
         function(){
-          $(mathEl).removeClass('highlight');
           $('#variable_desc').val('');
-      });
+          $(mathEl).removeClass('highlight');
+        });
     }
-    initHighlightVar('#units_div', '#const', 'units');
-    initHighlightVar('#target_temp_div', '.target_temp', 'target');
-    initHighlightVar('#init_temp_div', '#init_temp', 'init');
-    initHighlightVar('#ratio_div', '#ratio', 'ratio');
+    initHighlightVar('#units_div', '*[data-var=thermo_const]', 'units');
+    initHighlightVar('#target_temp_div', '*[data-var=target_temp]', 'target');
+    initHighlightVar('#init_temp_div', '*[data-var=init_temp]', 'init');
+    initHighlightVar('#ratio_div', '*[data-var=ratio]', 'ratio');
   </script>
 </body>
 </html>
