@@ -9,6 +9,7 @@
         color:#fff;
       }
       #logo{
+        font-size:.5em;
         font-family:Courier;
         text-align:justify;
       }
@@ -23,6 +24,8 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script>
       var text="<!DOCTYPE html>";
+      text+=document.getElementsByTagName('html')[0].innerHTML;
+      text+=document.getElementsByTagName('html')[0].innerHTML;
       text+=document.getElementsByTagName('html')[0].innerHTML;
       text=text.replace(/\s*(\n\s*)+/ig,'').replace(/\s+(?= )/g,'').split("");
 
