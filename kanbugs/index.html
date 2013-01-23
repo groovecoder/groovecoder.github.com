@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>I kanban haz bugs | Kanbu.gs</title>
+  <link href="lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+  <link href="css/styles.css" rel="stylesheet" media="screen"/>
+</head>
+<body>
+
+  <h1>Kanbu.gs</h1>
+
+  <form id="filters">
+    <fieldset>
+      <label>whiteboard=</label>
+      <input type="text" name="whiteboard" id="whiteboard">
+      <span class="help-block">Value to pass to the bugzilla api whiteboard= input parameter.</span>
+      <button class="btn">Kanban ALL the bugs!</button>
+    </fieldset>
+  </form>
+
+  <div class="progress progress-striped active">
+    <div id="progress-bar" class="bar" style="width: 25%;"><img src="https://bugzilla.mozilla.org/extensions/BMO/web/images/mozchomp.gif" width="16" height="16"/>Loading...</div>
+  </div>
+
+  <div id="board-stats">
+    Lead Time: <span id="lead-time"></span> <a href="#" title="Lead Time is between bugs created and marked VERIFIED:FIXED"><i class="icon-question-sign"></i></a><br/>
+    Triage Time: <span id="triage-time"></span> <a href="#" title="Triage Time is between bugs created and selected (i.e., by adding 'p=' to their whiteboard)"><i class="icon-question-sign"></i></a>
+  </div>
+
+  <div id="selected-column" class="column">
+    <h3>Selected <span class="badge badge-info count">...</span></h3>
+    <h4><span class="duration">...</span><a href="#" title="Selected time is between bugs selected and assigned."><i class="icon-question-sign"></i></a></h4>
+    <ul id="selected">
+    </ul>
+  </div>
+
+  <div id="implement-column" class="column">
+    <h3>Implement <span class="badge badge-info count">...</span></h3>
+    <h4><span class="duration">...</span><a href="#" title="Implement time is between bug assigned and pull request submitted for it."><i class="icon-question-sign"></i></a></h4>
+    <ul id="implement">
+    </ul>
+  </div>
+
+  <div id="review-column" class="column">
+    <h3>Review <span class="badge badge-info count">...</span></h3>
+    <h4><span class="duration">...</span><a href="#" title="Review time is between pull request submitted and merged (RESOLVED:FIXED)."><i class="icon-question-sign"></i></a></h4>
+    <ul id="review">
+    </ul>
+  </div>
+
+  <div id="test-column" class="column">
+    <h3>Test <span class="badge badge-info count">...</span></h3>
+    <h4><span class="duration">...</span><a href="#" title="Test time is between pull request merged and VERIFIED:FIXED."><i class="icon-question-sign"></i></a></h4>
+    <ul id="test">
+    </ul>
+  </div>
+
+  <div id="released-column" class="column">
+    <h3>Released <span class="badge badge-info count">...</span></h3>
+    <ul id="released">
+    </ul>
+  </div>
+
+
+  <script src="lib/jquery-1.8.3.min.js"></script>
+  <script src="lib/underscore-min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="lib/date.js"></script>
+  <script src="lib/time.js"></script>
+  <script src="js/kanbugs.js"></script>
+</body>
+</html>
